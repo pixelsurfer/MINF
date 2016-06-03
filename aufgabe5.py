@@ -69,19 +69,6 @@ def decode(rowSpec, colSpec):
             print("nice")
         if valueRow != valueCol:
             print("not Nice")
-            valueRow
-    
-
-    
-  
-    
-    
-    
-
-
-    # 2 x 2 Matritzen abarbeiten
-   
-    # Test-Ausgabe der befüllten Arrays            
-  
-# 2 x 2 Test (Leerzeichen erstmal mit 0 ersetzt)
+            
 decode([[1], [1, 1], [2, 1], [1, 2]], [[3], [1, 1], [1, 1], [2]])
+
