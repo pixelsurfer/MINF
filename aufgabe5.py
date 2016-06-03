@@ -16,8 +16,7 @@ import numpy as np
 # Decodierung für maximal 4 x 4 Matritzen 
 def decode(rowSpec, colSpec):
     # Möglichkeiten der 1er-Blöcke (erstmal nur für 2 x 2 Matritzen)
-    ones_1 = [1]
-    ones_2 = [2] 
+
     # Level der Matrix holen
     level = len(rowSpec)
     # Gleichgroße Matrizen mit Nullen füllen jeweils für Zeile und Spalte
@@ -26,23 +25,33 @@ def decode(rowSpec, colSpec):
     # Zeilen und Spalten flatten
     rows = np.array([rowSpec]).flatten()
     cols = np.array([colSpec]).flatten()
-    
-    # 2 x 2 Matritzen abarbeiten
-    if level == 2:
-    # Zeilen befüllen
-        for i in rows:
-            if i == ones_1:
-                rows_zeros[i] = 1
-            if i == ones_2:
-                rows_zeros[i:] = 1
-    # Spalten befüllen (Befüllung noch nicht korrekt)
-        for i in cols:
-            if i == ones_1:
-                cols_zeros[i] = 1
-            if i == ones_2:
-                cols_zeros[i:] = 1
-    # Test-Ausgabe der befüllten Arrays            
+    #print(rows)
+   # print(cols)
+
+#rows<--------------------------------
+    for i in range(level):
+        if len(rowSpec[i]) > 1:
+            wert1 = rows[i][0]
+            wert2 = rows[i][1]
+            if wert1 != wert2:
+                wert2 = level-wert2
+                rows_zeros[i][:wert1:1] = 1
+                rows_zeros[i][wert2:level:1] = 1
+            else:
+                rows_zeros[i][0:level:2] = 1
+                
+        else:
+            wert = rows[i][0]
+            rows_zeros[i][:wert:1] = 1
+            
+   
+      
     print(rows_zeros)
-    print(cols_zeros)       
+ 
+    # 2 x 2 Matritzen abarbeiten
+   
+    # Test-Ausgabe der befüllten Arrays            
+    #print(rows_zeros)
+    #print(cols_zeros)       
 # 2 x 2 Test (Leerzeichen erstmal mit 0 ersetzt)
-decode([[1], [1]], [[2], [0]])
+decode([[1], [1, 1], [2, 1], [1, 2]], [[3], [1, 1], [1, 1], [2]])
