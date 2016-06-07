@@ -26,13 +26,16 @@ def matrixRowCol(level,rowCol,rowColZeros,length):
                 wert2 = level-wert2
                 rowColZeros[i][:wert1:1] = 1
                 rowColZeros[i][wert2:level:1] = 1
-            else:
-                #Fall für [1,1]
-                rowColZeros[i][0:level:2] = 1
+#            else:
+#                #Fall für [1,1]
+#                rowColZeros[i][0:level:2] = 1
         #Fall für einzelne Zahlen wie [1],[2].......      
         else:
             wert = rowCol[i][0]
-            rowColZeros[i][:wert:1] = 1
+            if wert == 4:
+                rowColZeros[i][:wert:1] = 1
+#            elif wert == 3:
+#                rowColZeros[i][:wert:1] = 1
     return rowColZeros
     
 # Decodierung für maximal 4 x 4 Matritzen 
@@ -56,7 +59,7 @@ def decode(rowSpec, colSpec):
 #Cols<----------------------------------
     colMatrix = matrixRowCol(level,cols,cols_zeros,colSpec).T
     print(colMatrix)
-    
+    print(np.add(rowMatrix, colMatrix))
     for i in range(level):
         valueRow = 0
         valueCol = 0
@@ -70,5 +73,5 @@ def decode(rowSpec, colSpec):
         if valueRow != valueCol:
             print("not Nice")
             
-decode([[1], [1, 1], [2, 1], [1, 2]], [[3], [1, 1], [1, 1], [2]])
+decode([[0], [4], [2, 1], [1, 2]], [[0], [4], [1, 2], [0]])
 
