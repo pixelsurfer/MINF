@@ -32,7 +32,8 @@ def matrixRowCol(level,rowCol,rowColZeros,length):
         #Fall für einzelne Zahlen wie [1],[2].......      
         else:
             wert = rowCol[i][0]
-            if wert == 4:
+            print (wert)
+            if wert == level:
                 rowColZeros[i][:wert:1] = 1
 #            elif wert == 3:
 #                rowColZeros[i][:wert:1] = 1
@@ -48,30 +49,17 @@ def decode(rowSpec, colSpec):
     rows_zeros = (np.zeros((level, level)))
     cols_zeros = (np.zeros((level, level)))
     # Zeilen und Spalten flatten
-    rows = np.array([rowSpec]).flatten()
-    cols = np.array([colSpec]).flatten()
+    print(rowSpec)
+    print(colSpec)
     #print(rows)
     #print(cols)
-    
 #rows<--------------------------------
-    rowMatrix = matrixRowCol(level,rows,rows_zeros,rowSpec)
+    rowMatrix = matrixRowCol(level,rowSpec,rows_zeros,rowSpec)
     print(rowMatrix)
 #Cols<----------------------------------
-    colMatrix = matrixRowCol(level,cols,cols_zeros,colSpec).T
+    colMatrix = matrixRowCol(level,colSpec,cols_zeros,colSpec).T
     print(colMatrix)
-    print(np.add(rowMatrix, colMatrix))
-    for i in range(level):
-        valueRow = 0
-        valueCol = 0
-        for j in range(level):
-            valueRow = valueRow + rowMatrix[j][i]
-            valueCol = valueCol + colMatrix[j][i]
-        print(valueRow)
-        print(valueCol)
-        if valueRow == valueCol:
-            print("nice")
-        if valueRow != valueCol:
-            print("not Nice")
+    
             
-decode([[0], [4], [2, 1], [1, 2]], [[0], [4], [1, 2], [0]])
+decode([[1], [1, 1], [1, 1], [1, 2]], [[1, 1], [1], [2, 1], [2]])
 
