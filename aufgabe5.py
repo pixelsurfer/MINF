@@ -6,60 +6,41 @@ Created on Tue May 31 14:25:21 2016
 """
 import numpy as np
 
-#   1. Zeilen und Spalten jeweils mit 1er-Blöcken in unterschiedlichen Arrays ablegen
-#   2. Arrays zeilenweise miteinander verunden 
-#   3. Ist das Ergebnis identisch mit der geprüften Zeile: Zeile abgearbeitet 
-#   4. Ist das Ergebnis nicht identisch vorhandende Einsen in der Zeile um eine Stelle nach rechts verschieben
-#   5. Indizies mit 2er-Potenzen summieren und Ergbnis ausgeben 
-
-
-def matrixRowCol(level,rowCol,rowColZeros,length):
+def matrixRowCol(rowCol):
+    level = len(rowCol)
+    rowColZeros = (np.zeros((level, level)))
     for i in range(level):
-        #gucken wieviele Zahlen in row/col sind
-        if len(length[i]) > 1:
-            #wert1 enthält den ersten Wert aus row und col und Wert zwei den zweiten
-            wert1 = rowCol[i][0]
-            wert2 = rowCol[i][1]
-            #filtern der [1,2] oder [2,1] oder [1,1] Kombination
-            if wert1 != wert2:
-                #Startwert für die Zweite Zahl aus row und col
-                wert2 = level-wert2
-                rowColZeros[i][:wert1:1] = 1
-                rowColZeros[i][wert2:level:1] = 1
-#            else:
-#                #Fall für [1,1]
-#                rowColZeros[i][0:level:2] = 1
-        #Fall für einzelne Zahlen wie [1],[2].......      
+        # gucken wieviele Zahlen in row/col sind
+        if len(rowCol[i]) > 1:
+            # wert1 enthält den ersten Wert aus row und col und Wert zwei den zweiten
+            value1 = rowCol[i][0]
+            value2 = rowCol[i][1]
+            # filtern der [1,2] oder [2,1] Blöcke
+            if value1 != value2:
+                # Startwert für die Zweite Zahl aus row und col
+                value2 = level-value2
+                rowColZeros[i][:value1:1] = 1
+                rowColZeros[i][value2:level:1] = 1
+                
+        # Fall für Wert 2,3,4 der jeweiligen Matrix-Größe    
         else:
-            wert = rowCol[i][0]
-            print (wert)
-            if wert == level:
-                rowColZeros[i][:wert:1] = 1
-#            elif wert == 3:
-#                rowColZeros[i][:wert:1] = 1
+            value = rowCol[i][0]
+            if value == level:
+                rowColZeros[i][:level:1] = 1
+
     return rowColZeros
+
+
     
-# Decodierung für maximal 4 x 4 Matritzen 
+def logicalOr(rowMatrix, colMatrix):
+    logicalOr = rowMatrix + colMatrix
+    return np.array([[i-1 if i > 1 else i*1 for i in j] for j in logicalOr])
+    
 def decode(rowSpec, colSpec):
-    # Möglichkeiten der 1er-Blöcke (erstmal nur für 2 x 2 Matritzen)
+    rowMatrix = matrixRowCol(rowSpec)
+    colMatrix = matrixRowCol(colSpec).T
+    logicalOrMatrix = logicalOr(rowMatrix, colMatrix)
+    print(logicalOrMatrix)
 
-    # Level der Matrix holen
-    level = len(rowSpec)
-    # Gleichgroße Matrizen mit Nullen füllen jeweils für Zeile und Spalte
-    rows_zeros = (np.zeros((level, level)))
-    cols_zeros = (np.zeros((level, level)))
-    # Zeilen und Spalten flatten
-    print(rowSpec)
-    print(colSpec)
-    #print(rows)
-    #print(cols)
-#rows<--------------------------------
-    rowMatrix = matrixRowCol(level,rowSpec,rows_zeros,rowSpec)
-    print(rowMatrix)
-#Cols<----------------------------------
-    colMatrix = matrixRowCol(level,colSpec,cols_zeros,colSpec).T
-    print(colMatrix)
-    
-            
-decode([[1], [1, 1], [1, 1], [1, 2]], [[1, 1], [1], [2, 1], [2]])
-
+# Leere Arrays noch durch Nullen ersetzt 
+decode([[3], [1], [0]], [[1], [2], [1]])
